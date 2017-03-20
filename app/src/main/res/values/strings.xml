@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PhotoPicker</string>
+    <string name="album_title">相机胶卷(%1$d)</string>
+    <string name="cancel">取消</string>
+    <string name="complete">完成</string>
+
+</resources>
