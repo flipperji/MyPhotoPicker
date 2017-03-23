@@ -8,14 +8,10 @@ import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -120,7 +116,7 @@ public class AlbumAdapter extends BaseAdapter {
                         listener.onPhotoItemClick(holder.rootView, imageInformation, position);
                 }
             });
-            holder.cb.setOnClickListener(new View.OnClickListener() {
+            /*holder.cb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (imageInformation.path.endsWith("gif")) {
@@ -136,8 +132,8 @@ public class AlbumAdapter extends BaseAdapter {
                         holder.ivShadow.setVisibility(View.GONE);
                     }
                 }
-            });
-            holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            });*/
+           /* holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f, 1.0f, 0.1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation
@@ -145,15 +141,22 @@ public class AlbumAdapter extends BaseAdapter {
                     scaleAnimation.setDuration(50);
                     holder.cb.startAnimation(scaleAnimation);
                 }
-            });
-            boolean contains = mSelectedPhotos.contains(imageInformation);
+            });*/
+            /*boolean contains = mSelectedPhotos.contains(imageInformation);
             if (contains) {
                 holder.ivShadow.setVisibility(View.VISIBLE);
                 holder.cb.setChecked(true);
             } else {
                 holder.ivShadow.setVisibility(View.GONE);
                 holder.cb.setChecked(false);
-            }
+            }*/
+            /*holder.rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("test", "onClick: "+position);
+                    CommonUtils.crop(imageInformation.path,mActivity);
+                }
+            });*/
             Glide.with(mActivity)
                     .load(Uri.fromFile(new File(imageInformation.path)))
                     .dontAnimate()
@@ -183,7 +186,7 @@ public class AlbumAdapter extends BaseAdapter {
             rootView = view;
             ivPhoto = (ImageView) view.findViewById(R.id.item_album_iv_photo);
             ivShadow = (ImageView) view.findViewById(R.id.item_album_iv_shadow);
-            cb = (CheckBox) view.findViewById(R.id.item_album_cb);
+           // cb = (CheckBox) view.findViewById(R.id.item_album_cb);
         }
 
     }

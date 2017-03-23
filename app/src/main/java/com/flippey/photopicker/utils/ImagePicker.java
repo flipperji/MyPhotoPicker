@@ -29,6 +29,7 @@ public class ImagePicker {
     public static final int REQUEST_CODE_PREVIEW = 1003;
     public static final int RESULT_CODE_PATHS = 1004;
     public static final int RESULT_CODE_BACK = 1005;
+    public static final int IMAGE_CROP_CODE = 1006;
 
     public static final String SELECTED_PHOTO_PATHS = "selected_photo_paths";
     public static final String EXTRA_SELECTED_IMAGE_POSITION = "selected_image_position";
@@ -45,7 +46,10 @@ public class ImagePicker {
     private List<OnImageSelectedListener> mImageSelectedListeners;          // 图片选中的监听回调
     private int innterPosition;
     private int outterPosition;
-
+    public static final int aspectX = 1;
+    public static final int aspectY = 1;
+    public static final int outputX = 400;
+    public static final int outputY = 400;
     private static ImagePicker mInstance;
     public static ImagePicker getInstance() {
         if (mInstance == null) {

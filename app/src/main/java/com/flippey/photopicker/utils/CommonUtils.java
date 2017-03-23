@@ -1,5 +1,10 @@
 package com.flippey.photopicker.utils;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -8,6 +13,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+import java.io.File;
 
 /**
  * @ Author      Flippey
@@ -120,5 +130,66 @@ public class CommonUtils {
         Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width,
                 height, matrix, true);
         return resizedBitmap;
+    }
+
+    public static void crop(String imagePath,Activity context) {
+        File file = new File(createRootPath(context) + "/" + System.currentTimeMillis() + ".jpg");
+
+        String absolutePath = file.getAbsolutePath();
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(getImageContentUri(new File(imagePath),context), "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", ImagePicker.aspectX);
+        intent.putExtra("aspectY", ImagePicker.aspectY);
+        intent.putExtra("outputX", ImagePicker.outputX);
+        intent.putExtra("outputY", ImagePicker.outputY);
+        intent.putExtra("scale", true);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true);
+        context.startActivityForResult(intent, ImagePicker.IMAGE_CROP_CODE);
+    }
+
+    /**
+     * 创建根缓存目录
+     *
+     * @return
+     */
+    public static String createRootPath(Context context) {
+        String cacheRootPath = "";
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            // /sdcard/Android/data/<application package>/cache
+            cacheRootPath = context.getExternalCacheDir().getPath();
+        } else {
+            // /data/data/<application package>/cache
+            cacheRootPath = context.getCacheDir().getPath();
+        }
+        return cacheRootPath;
+    }
+
+    public static Uri getImageContentUri(File imageFile,Context context) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Media._ID},
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[]{filePath}, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
     }
 }
