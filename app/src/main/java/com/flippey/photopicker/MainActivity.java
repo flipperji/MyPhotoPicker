@@ -1,11 +1,11 @@
 package com.flippey.photopicker;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,13 +18,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
-    @BindView(R.id.iv_photo)
     ImageView mIvPhoto;
     private MainActivity mInstance;
     public static final int PHOTO_RQ_CODE = 113;
@@ -35,18 +31,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mInstance = MainActivity.this;
+        mIvPhoto = (ImageView) findViewById(R.id.iv_photo);
+        findViewById(R.id.iv_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mInstance.startActivityForResult(new Intent(mInstance, AlbumActivity.class), PHOTO_RQ_CODE);
+            }
+        });
         mImagePicker = ImagePicker.getInstance();
-        ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.iv_add)
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_add:
-                mInstance.startActivityForResult(new Intent(mInstance, AlbumActivity.class), PHOTO_RQ_CODE);
-                break;
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

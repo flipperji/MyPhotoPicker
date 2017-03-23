@@ -48,7 +48,6 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
         LoaderManager loaderManager = activity.getSupportLoaderManager();
 
         if (path == null) {
-            loaderManager.initLoader(LOADER_ALL, null, this);
             loaderManager.initLoader(LOADER_ALL, null, this);//加载所有的图片
         } else {
             //加载指定目录的图片
@@ -86,6 +85,7 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
                 String imageMimeType = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[5]));
                 long imageAddTime = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[6]));
                 //封装实体
+
                 ImageInformation imageItem = new ImageInformation();
                 imageItem.name = imageName;
                 imageItem.path = imagePath;
@@ -94,7 +94,9 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
                 imageItem.height = imageHeight;
                 imageItem.mimeType = imageMimeType;
                 imageItem.addTime = imageAddTime;
-                allImages.add(imageItem);
+                if (!imageMimeType.endsWith("gif")) {
+                    allImages.add(imageItem);
+                }
                 //根据父路径分类存放图片
                 File imageFile = new File(imagePath);
                 File imageParentFile = imageFile.getParentFile();

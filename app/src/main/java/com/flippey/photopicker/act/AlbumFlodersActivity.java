@@ -1,7 +1,7 @@
 package com.flippey.photopicker.act;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,16 +14,12 @@ import com.flippey.photopicker.utils.ImagePicker;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
-public class AlbumFlodersActivity extends AppCompatActivity {
 
-    @BindView(R.id.tv_album_floders_title)
+public class AlbumFlodersActivity extends FragmentActivity implements View.OnClickListener {
+
     TextView mTvTitle;
-    @BindView(R.id.rl_album_floders_lv)
     ListView mLv;
     private ImagePicker mImagePicker;
     private List<ImageFolder> mImageFolders;
@@ -34,13 +30,15 @@ public class AlbumFlodersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_floders);
-        ButterKnife.bind(this);
         mInstance = AlbumFlodersActivity.this;
         initView();
 
     }
 
     private void initView() {
+        mTvTitle = (TextView) findViewById(R.id.tv_album_floders_title);
+        mLv = (ListView) findViewById(R.id.rl_album_floders_lv);
+        findViewById(R.id.tv_album_floders_back).setOnClickListener(this);
         mImagePicker = ImagePicker.getInstance();
         mImageFolders = mImagePicker.getImageFolders();
         mTvTitle.setText(String.format(getString(R.string.album_title), mImageFolders.get(0).images.size()));
@@ -55,8 +53,14 @@ public class AlbumFlodersActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.tv_album_floders_back)
-    public void onClick() {
-        finish();
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_album_floders_back:
+                finish();
+                break;
+        }
     }
 }

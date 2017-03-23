@@ -44,8 +44,6 @@ public class ImagePicker {
     private List<ImageFolder> mImageFolders;      //所有的图片文件夹
     private int mCurrentImageFolderPosition = 0;  //当前选中的文件夹位置 0表示所有图片
     private List<OnImageSelectedListener> mImageSelectedListeners;          // 图片选中的监听回调
-    private int innterPosition;
-    private int outterPosition;
     public static final int aspectX = 1;
     public static final int aspectY = 1;
     public static final int outputX = 400;
@@ -62,15 +60,6 @@ public class ImagePicker {
         return mInstance;
     }
 
-    public int getSelectLimit() {
-        return selectLimit;
-    }
-
-    public boolean isShowCamera() {
-        return showCamera;
-    }
-
-
 
     public File getTakeImageFile() {
         return takeImageFile;
@@ -83,25 +72,6 @@ public class ImagePicker {
         return cropCacheFolder;
     }
 
-    public void setCropCacheFolder(File cropCacheFolder) {
-        this.cropCacheFolder = cropCacheFolder;
-    }
-
-    public int getInnterPosition() {
-        return innterPosition;
-    }
-
-    public void setInnterPosition(int innterPosition) {
-        this.innterPosition = innterPosition;
-    }
-
-    public int getOutterPosition() {
-        return outterPosition;
-    }
-
-    public void setOutterPosition(int outterPosition) {
-        this.outterPosition = outterPosition;
-    }
 
     public List<ImageFolder> getImageFolders() {
         return mImageFolders;
